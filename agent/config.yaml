@@ -1,0 +1,21 @@
+# Logylyzer Agent Configuration
+analyzer:
+  endpoint: "http://localhost:2576"
+  
+discovery:
+  enabled: true
+  scan_interval: "30s"
+  
+monitoring:
+  log_paths:
+    - "/var/log/*.log"
+    - "/var/log/*/*.log"
+    - "/tmp/*.log"
+  exclude_patterns:
+    - "*.gz"
+    - "*.zip"
+  
+services:
+  auto_detect: true
+  docker: true
+  systemd: true

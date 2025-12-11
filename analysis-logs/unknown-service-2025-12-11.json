@@ -1,0 +1,15 @@
+[
+  {
+    "timestamp": "2025-12-11T21:25:44.209Z",
+    "serviceName": "unknown-service",
+    "analysis": {
+      "rootCause": "Analysis completed",
+      "severity": "medium",
+      "suggestedFix": "```json\n{\n  \"rootCause\": \"The server failed to start due to a missing 'APPLE_API_KEY' environment variable, which is a critical configuration requirement.\",\n  \"severity\": \"critical\",\n  \"suggestedFix\": \"Ensure the 'APPLE_API_KEY' environment variable is correctly set in the server's operating environment. This might involve:\\n1.  Adding it to a `.env` file if used.\\n2.  Setting it in your CI/CD pipeline variables.\\n3.  Configuring it as an environment variable in your container orchestration system (e.g., Kubernetes Deployment spec, Docker Compose).\\n4.  Setting it directly on the server host or cloud platform.\\nAfter setting the variable, restart the server process.\",\n  \"patternsDetected\": [\n    \"Environment variable missing\",\n    \"Server startup failure\",\n    \"Configuration error\"\n  ]\n}\n```",
+      "patternsDetected": [
+        "Raw AI response"
+      ]
+    },
+    "originalLogs": "failed to start server. APPLE_API_KEY missing"
+  }
+]

@@ -1,0 +1,28 @@
+[
+  {
+    "timestamp": "2025-12-11T21:27:32.522Z",
+    "serviceName": "backend-core",
+    "analysis": {
+      "rootCause": "Analysis completed",
+      "severity": "medium",
+      "suggestedFix": "```json\n{\n  \"rootCause\": \"The server failed to start because the mandatory APPLE_API_KEY environment variable or configuration parameter is missing.\",\n  \"severity\": \"critical\",\n  \"suggestedFix\": \"Ensure the APPLE_API_KEY environment variable is correctly set and accessible in the server's runtime environment. If using a configuration file, verify the key is present and correctly populated within the file. For containerized deployments, check the Dockerfile, Kubernetes deployment manifest (e.g., 'env' or 'envFrom' sections), or CI/CD pipeline for the variable definition and value injection.\",\n  \"patternsDetected\": [\"Missing Configuration\", \"Environment Variable Error\", \"Service Startup Failure\"]\n}\n```",
+      "patternsDetected": [
+        "Raw AI response"
+      ]
+    },
+    "originalLogs": "failed to start server. APPLE_API_KEY missing"
+  },
+  {
+    "timestamp": "2025-12-11T21:37:51.541Z",
+    "serviceName": "backend-core",
+    "analysis": {
+      "rootCause": "Analysis completed",
+      "severity": "medium",
+      "suggestedFix": "```json\n{\n  \"rootCause\": \"The application failed to establish a connection to the database within the allotted 30-second timeout period. This could be due to the database server being overloaded, unreachable, misconfigured, or experiencing network latency.\",\n  \"severity\": \"high\",\n  \"suggestedFix\": \"1. Verify the database server is running and accessible. 2. Check the database server's resource utilization (CPU, memory, I/O) for signs of overload. 3. Confirm network connectivity between the application server and the database server (e.g., ping, telnet to database port). 4. Review database logs for errors or long-running queries. 5. Examine firewall rules and security groups. 6. Consider increasing the database connection timeout in the application as a temporary measure while investigating, but focus on resolving the underlying cause.\",\n  \"patternsDetected\": [\n    \"Database Connection Timeout\",\n    \"Resource Contention/Overload\",\n    \"Network Connectivity Issue\"\n  ]\n}\n```",
+      "patternsDetected": [
+        "Raw AI response"
+      ]
+    },
+    "originalLogs": "ERROR: Database connection timeout after 30s"
+  }
+]
