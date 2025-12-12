@@ -5,9 +5,31 @@ set -e
 INSTALL_DIR="/opt/logylyzer"
 CONFIG_DIR="/etc/logylyzer"
 SERVICE_FILE="/etc/systemd/system/logylyzer-agent.service"
-BINARY_URL="https://github.com/cimeriann/logylyzer/releases/latest/download/logylyzer-agent"
+GITHUB_REPO="cimeriann/logylyzer"  # Update this to your GitHub username/repo
 
 echo "🔍 Installing Logylyzer Agent..."
+
+# Detect architecture
+ARCH=$(uname -m)
+OS=$(uname -s | tr '[:upper:]' '[:lower:]')
+
+case $ARCH in
+    x86_64) ARCH="amd64" ;;
+    aarch64|arm64) ARCH="arm64" ;;
+    *) echo "❌ Unsupported architecture: $ARCH"; exit 1 ;;
+esac
+
+case $OS in
+    linux) OS="linux" ;;
+    darwin) OS="darwin" ;;
+    *) echo "❌ Unsupported OS: $OS"; exit 1 ;;
+esac
+
+BINARY_NAME="logylyzer-agent-${OS}-${ARCH}"
+BINARY_URL="https://github.com/${GITHUB_REPO}/releases/latest/download/${BINARY_NAME}"
+
+echo "📋 Detected: $OS $ARCH"
+echo "📥 Download URL: $BINARY_URL"
 
 # Check if running as root
 if [[ $EUID -ne 0 ]]; then
