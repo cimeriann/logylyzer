@@ -41,72 +41,15 @@ jobs:
         chmod +x build/logylyzer-agent-*
     
     - name: Create Release
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-        TOKEN_GIT: ${{ secrets.TOKEN_GIT }}
+      uses: softprops/action-gh-release@v1
       with:
-        tag_name: ${{ github.ref }}
-        release_name: Release ${{ github.ref }}
-        draft: false
-        prerelease: false
-    
-    - name: Upload Linux AMD64
-      uses: actions/upload-release-asset@v1
+        files: |
+          agent/build/logylyzer-agent-linux-amd64
+          agent/build/logylyzer-agent-linux-arm64
+          agent/build/logylyzer-agent-darwin-amd64
+          agent/build/logylyzer-agent-darwin-arm64
+          agent/build/logylyzer-agent-windows-amd64.exe
+          agent/install.sh
+        generate_release_notes: true
       env:
-        TOKEN_GIT: ${{ secrets.TOKEN_GIT }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./agent/build/logylyzer-agent-linux-amd64
-        asset_name: logylyzer-agent-linux-amd64
-        asset_content_type: application/octet-stream
-    
-    - name: Upload Linux ARM64
-      uses: actions/upload-release-asset@v1
-      env:
-        TOKEN_GIT: ${{ secrets.TOKEN_GIT }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./agent/build/logylyzer-agent-linux-arm64
-        asset_name: logylyzer-agent-linux-arm64
-        asset_content_type: application/octet-stream
-    
-    - name: Upload macOS AMD64
-      uses: actions/upload-release-asset@v1
-      env:
-        TOKEN_GIT: ${{ secrets.TOKEN_GIT }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./agent/build/logylyzer-agent-darwin-amd64
-        asset_name: logylyzer-agent-darwin-amd64
-        asset_content_type: application/octet-stream
-    
-    - name: Upload macOS ARM64
-      uses: actions/upload-release-asset@v1
-      env:
-        TOKEN_GIT: ${{ secrets.TOKEN_GIT }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./agent/build/logylyzer-agent-darwin-arm64
-        asset_name: logylyzer-agent-darwin-arm64
-        asset_content_type: application/octet-stream
-    
-    - name: Upload Windows AMD64
-      uses: actions/upload-release-asset@v1
-      env:
-        TOKEN_GIT: ${{ secrets.TOKEN_GIT }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./agent/build/logylyzer-agent-windows-amd64.exe
-        asset_name: logylyzer-agent-windows-amd64.exe
-        asset_content_type: application/octet-stream
-    
-    - name: Upload Install Script
-      uses: actions/upload-release-asset@v1
-      env:
-        TOKEN_GIT: ${{ secrets.TOKEN_GIT }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./agent/install.sh
-        asset_name: install.sh
-        asset_content_type: text/plain
+        GITHUB_TOKEN: ${{ secrets.TOKEN_GIT }}
