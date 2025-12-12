@@ -1,6 +1,7 @@
 import type { AnalyzeLogsRequestBody } from "../types/index.d.ts";
 import axios from "axios";
 
+
 export const analyseLogs = async (logs: AnalyzeLogsRequestBody["logs"]) => {
 	const apiKey = process.env.LLM_API_KEY;
 	const baseUrl = process.env.LLM_API_URL;
