@@ -5,7 +5,7 @@ set -e
 INSTALL_DIR="/opt/logylyzer"
 CONFIG_DIR="/etc/logylyzer"
 SERVICE_FILE="/etc/systemd/system/logylyzer-agent.service"
-BINARY_URL="https://github.com/your-org/logylyzer/releases/latest/download/logylyzer-agent"
+BINARY_URL="https://github.com/cimeriann/logylyzer/releases/latest/download/logylyzer-agent"
 
 echo "🔍 Installing Logylyzer Agent..."
 
