@@ -1,0 +1,112 @@
+name: Build and Release Agent
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: '1.21'
+    
+    - name: Build binaries
+      run: |
+        cd agent
+        mkdir -p build
+        
+        # Linux AMD64
+        CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o build/logylyzer-agent-linux-amd64 .
+        
+        # Linux ARM64
+        CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -ldflags="-s -w" -o build/logylyzer-agent-linux-arm64 .
+        
+        # macOS AMD64
+        CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 go build -ldflags="-s -w" -o build/logylyzer-agent-darwin-amd64 .
+        
+        # macOS ARM64 (Apple Silicon)
+        CGO_ENABLED=0 GOOS=darwin GOARCH=arm64 go build -ldflags="-s -w" -o build/logylyzer-agent-darwin-arm64 .
+        
+        # Windows AMD64
+        CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build -ldflags="-s -w" -o build/logylyzer-agent-windows-amd64.exe .
+        
+        # Make binaries executable
+        chmod +x build/logylyzer-agent-*
+    
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        draft: false
+        prerelease: false
+    
+    - name: Upload Linux AMD64
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./agent/build/logylyzer-agent-linux-amd64
+        asset_name: logylyzer-agent-linux-amd64
+        asset_content_type: application/octet-stream
+    
+    - name: Upload Linux ARM64
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./agent/build/logylyzer-agent-linux-arm64
+        asset_name: logylyzer-agent-linux-arm64
+        asset_content_type: application/octet-stream
+    
+    - name: Upload macOS AMD64
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./agent/build/logylyzer-agent-darwin-amd64
+        asset_name: logylyzer-agent-darwin-amd64
+        asset_content_type: application/octet-stream
+    
+    - name: Upload macOS ARM64
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./agent/build/logylyzer-agent-darwin-arm64
+        asset_name: logylyzer-agent-darwin-arm64
+        asset_content_type: application/octet-stream
+    
+    - name: Upload Windows AMD64
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./agent/build/logylyzer-agent-windows-amd64.exe
+        asset_name: logylyzer-agent-windows-amd64.exe
+        asset_content_type: application/octet-stream
+    
+    - name: Upload Install Script
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./agent/install.sh
+        asset_name: install.sh
+        asset_content_type: text/plain
